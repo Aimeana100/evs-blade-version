@@ -1,5 +1,12 @@
 FROM php:8.1-fpm
 
+RUN apt-get update && \
+      apt-get -y install sudo
+
+RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+
+USER docker
+
 # Set working directory
 WORKDIR /var/www
 
@@ -26,6 +33,10 @@ RUN apt-get update && apt-get install -y \
     libmemcached-dev \
     nginx
 
+#Create log file
+
+
+
 # Install supervisor
 # RUN apt-get install -y supervisor
 
@@ -47,6 +58,8 @@ COPY --chown=www:www-data . /var/www
 
 # add root to www group
 RUN chmod -R ugo+w /var/www/storage
+
+RUN chmod -R 775 storage bootstrap/cache
 # /var/www/storage/logs/laravel.log
 
 # Copy nginx/php/supervisor configs
