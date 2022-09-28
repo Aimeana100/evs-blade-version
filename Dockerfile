@@ -56,10 +56,12 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 # Copy code to /var/www
 COPY --chown=www:www-data . /var/www
 
+# 
+RUN chmod -R 775 storage bootstrap/cache
+
 # add root to www group
 RUN chmod -R ugo+w /var/www/storage
 
-RUN chmod -R 775 storage bootstrap/cache
 # /var/www/storage/logs/laravel.log
 
 # Copy nginx/php/supervisor configs
@@ -77,6 +79,6 @@ RUN touch /var/log/php/errors.log && chmod 777 /var/log/php/errors.log
 RUN composer install --optimize-autoloader --no-dev
 RUN chmod +x /var/www/docker/run.sh
 
-EXPOSE 22 80
+EXPOSE 22 80 433
 CMD ["/usr/bin/supervisord"]
 ENTRYPOINT ["/var/www/docker/run.sh"]
