@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('location')->nullable();
             $table->string('NID')->nullable();
             $table->string('phone')->nullable();
-            $table->string('ID_Card')->comment('ID number');
+            $table->string('ID_Card')-> comment('ID number');
             $table->string('company')->comment('the company that the labour from')->default('CIMERWA');
             $table->dateTime('dateJoined');
             $table->dateTime('latestTap');

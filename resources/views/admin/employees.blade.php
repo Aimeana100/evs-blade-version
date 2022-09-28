@@ -129,7 +129,7 @@
                         
 
 
-                        {{-- <form class="form" id="frmProfile" 
+                        <form class="form" id="frmProfile" 
                         action="{{route('admin.update.acount')}}"
                          method="POST">
 
@@ -211,7 +211,7 @@
                              </div>
 
                         </form>
-                     --}}
+                    
                     </div>
                     <div class="modal-footer">
                       {{-- <button  type="button" class="btn btn-primary download-btn d-none">Download</button> --}}

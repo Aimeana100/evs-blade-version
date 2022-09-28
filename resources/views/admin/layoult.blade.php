@@ -129,6 +129,14 @@
                       </a>
                    </li>
 
+                   <li class="sidebar-item @yield('empolyees_selected')">
+                     <a href=" {{route('admin.employees')}} " class='sidebar-link'>
+                     <i class="fa fa-user text-success"></i>
+                     
+                     <span> Staff </span>
+                     </a>
+                  </li>
+
                    <li class="sidebar-item  @yield('empolyees_attendance_selected') has-sub">
                       <a href="#" class='sidebar-link'>
                       <i class="fa fa-book text-success"></i>
@@ -152,21 +160,30 @@
                        </ul>
                    </li>
 
-                   <li class="sidebar-item @yield('empolyees_selected')">
-                      <a href=" {{route('admin.employees')}} " class='sidebar-link'>
-                      <i class="fa fa-user text-success"></i>
-                      
-                      <span> Staff </span>
-                      </a>
-                   </li>
+
                    <li class="sidebar-item @yield('visitors_selected')">
-                    <a href=" {{route('admin.visitors')}} " class='sidebar-link'>
+                     <a href=" {{route('admin.visitors')}} " class='sidebar-link'>
+                     <i class="fa fa-plane text-success"></i>
+                     <span> Vistors </span>
+                     </a>
+                   </li>
+
+                   <li class="sidebar-item @yield('visitors_selected')">
+                    <a href=" {{route('admin.users')}} " class='sidebar-link'>
                     <i class="fa fa-plane text-success"></i>
-                    <span> Vistors </span>
+                    <span> Users </span>
                     </a>
                   </li>
-                 
 
+                  <li class="sidebar-item @yield('visitors_selected')">
+                     <a href=" {{route('admin.logs')}} " class='sidebar-link'>
+                     <i class="fa fa-plane text-success"></i>
+                     <span> User logs </span>
+                     </a>
+                   </li>
+
+
+                 
                  <li class="sidebar-item @yield('profile_selected')">
                     <a href=" {{route('admin.account')}} " class='sidebar-link'>
                     <i class="fa fa-user text-success"></i>

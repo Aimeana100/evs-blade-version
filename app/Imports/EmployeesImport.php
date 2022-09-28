@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpsertColumns;
 
-class EmployeesImport implements ToModel,WithHeadingRow,WithUpserts,WithUpsertColumns
+class EmployeesImport implements ToModel,WithHeadingRow,WithUpsertColumns
 
 {
     /**
@@ -22,7 +22,7 @@ class EmployeesImport implements ToModel,WithHeadingRow,WithUpserts,WithUpsertCo
         return new Employee([
             'names' => $row['names'], 
             'surname' => $row['surname'],
-            'ID_Card' => $row['id-card'],
+            'ID_Card' => $row['id_card'],
             'department' => $row['department'],
             'category' => $row['category'],
             'location' => $row['location'],
@@ -37,10 +37,10 @@ class EmployeesImport implements ToModel,WithHeadingRow,WithUpserts,WithUpsertCo
     }
 
 
-    public function uniqueBy()
-    {
-        return 'email';
-    }
+    // public function uniqueBy()
+    // {
+    //     return 'ID_Card';
+    // }
 
     public function upsertColumns()
     {

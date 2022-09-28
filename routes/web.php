@@ -54,6 +54,8 @@ Route::get('/employees/burn/{employee}', [EmployeeController::class, 'employeeBu
 Route::get('/employees/{id}', [EmployeeController::class, 'employeeOne'])->middleware(['auth', 'verified'])->name('employee.one');
 Route::post('/employees/upload', [EmployeeController::class, 'uploadEmployees'])->middleware(['auth', 'verified'])->name('employee.upload');
 
+Route::post('/users', [EmployeeController::class, 'users'])->middleware(['auth', 'verified'])->name('admin.users');
+Route::post('/logs', [EmployeeController::class, 'logs'])->middleware(['auth', 'verified'])->name('admin.logs');
 
 
 Route::get('/equipments', [AdminController::class, 'equipments'])->middleware(['auth', 'verified'])->name('equipments');
