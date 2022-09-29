@@ -1,11 +1,11 @@
 FROM php:8.1-fpm
 
-RUN apt-get update && \
-      apt-get -y install sudo
+# RUN apt-get update && \
+#     apt-get -y install sudo
 
-RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+# RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 
-USER docker
+# USER docker
 
 # Set working directory
 WORKDIR /var/www
@@ -16,6 +16,8 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 # Install php extensions
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions mbstring pdo_mysql zip exif pcntl gd memcached
+
+ADD . /var/www
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -36,12 +38,12 @@ RUN apt-get update && apt-get install -y \
 #Create log file
 
 
-
 # Install supervisor
 # RUN apt-get install -y supervisor
 
 RUN apt-get update && apt-get install -y openssh-server apache2 supervisor
 RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd /var/log/supervisor
+
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -54,7 +56,8 @@ RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Copy code to /var/www
-COPY --chown=www:www-data . /var/www
+# COPY --chown=www:www-data . /var/www
+RUN chown -R www-data:www-data /var/www
 
 # 
 RUN chmod -R 775 storage bootstrap/cache
@@ -64,7 +67,7 @@ RUN chmod -R ugo+w /var/www/storage
 
 # /var/www/storage/logs/laravel.log
 
-# Copy nginx/php/supervisor configs
+# Copy nginx/php/supervisor/mysql configs
 RUN cp docker/supervisor.conf /etc/supervisord.conf
 RUN cp docker/php.ini /usr/local/etc/php/conf.d/app.ini
 RUN cp docker/nginx.conf /etc/nginx/sites-enabled/default
@@ -80,5 +83,5 @@ RUN composer install --optimize-autoloader --no-dev
 RUN chmod +x /var/www/docker/run.sh
 
 EXPOSE 22 80 433
-CMD ["/usr/bin/supervisord"]
+
 ENTRYPOINT ["/var/www/docker/run.sh"]

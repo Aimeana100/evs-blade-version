@@ -30,10 +30,11 @@ use App\Http\Controllers\admin\ReportController;
 Route::get('/report', [ReportController::class, 'index']);
 
 // admin
-Route::get('/', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('welcome');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // users
+
 Route::get('/user', [UserController::class, 'users'])->middleware(['auth', 'verified'])->name('users');
 Route::get('/user/create', [UserController::class, 'create'])->middleware(['auth', 'verified'])->name('users.create');
 Route::get('/user/edit/{id}', [UserController::class, 'edit'])->middleware(['auth', 'verified'])->name('users.edit');
