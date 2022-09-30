@@ -271,7 +271,7 @@
                                          @endif
                     
                                     </div>
-                                    <div class="d-none d-md-block d-lg-inline-block"> {{ auth()->user()->last_name}} </div>
+                                    <div class="d-none d-md-block d-lg-inline-block"> {{ auth()->user()->name}} </div>
                                  </a>
                                  <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item w-full flex" href="{{route('admin.account')}} "><i data-feather="user"></i> Account</a>
