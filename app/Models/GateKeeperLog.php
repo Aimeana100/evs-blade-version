@@ -9,11 +9,16 @@ class GateKeeperLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = 
+    protected $fillable =
     [
         'session',
-        'logDate',
+        'time',
         'gate_keeper_id',
         'loginDevice',
+        'activity',
     ];
+
+    public function gatekeeper(){
+        return $this->belongsTo(GateKeeper::class, 'gate_keeper_id');
+    }
 }

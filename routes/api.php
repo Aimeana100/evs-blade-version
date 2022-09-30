@@ -43,10 +43,11 @@ Route::post('/user',[UserController::class,'user'])->name('user');
 
 // sychronization
 
-
-Route::post('/sync/employee',[AuthController::class,'syncEmployee'])->name('sync.syncEmployee');
+Route::get('/sync/gatekeepers',[AuthController::class,'gatekeepers'])->name('sync.syncgatekeeper');
+Route::post('/sync/employees',[AuthController::class,'syncEmployee'])->name('sync.syncEmployee');
+Route::post('/sync/logs',[AuthController::class,'logs'])->name('sync.syncLogs');
 Route::post('/sync/visitors',[AuthController::class,'syncVisitor'])->name('sync.syncVisitor');
-Route::get('/sync/banned', [AuthController::class, 'bannedEmployees'])->middleware(['auth', 'verified'])->name('sync.banned');
-
+Route::get('/sync/employees/banned', [AuthController::class, 'bannedEmployees'])->middleware(['auth', 'verified'])->name('sync.banned');
+Route::post('/sync/alcohol',[AuthController::class,'alcohol'])->name('sync.syncAlcohol');
 
 

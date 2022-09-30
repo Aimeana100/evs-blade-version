@@ -35,10 +35,10 @@ class VistorController extends Controller
 
 
             $taps = CardTap::orderBy('tapped_at', 'DESC')
+                ->where('card_type', 'VISITOR')
                 ->whereBetween('tapped_at', [$dateS . " 00:00:00", $dateE . " 23:59:59"])
                 ->pluck('tapped_at')
                 ->toArray();
-
 
             $ymdDate = array_map(function ($el) {
 

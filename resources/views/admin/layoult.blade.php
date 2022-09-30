@@ -5,10 +5,15 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <title> E-vistors | @yield('page_title') </title>
-       {{-- <link rel="stylesheet" href="{{asset('css/app.css')}}">
-       <link rel="stylesheet" href="{{asset('js/app.js')}}"> --}}
+
+       <link rel="stylesheet" href="{{asset('css/app.css')}}">
+       <link rel="stylesheet" href="{{asset('js/app.js')}}">
+
          <!-- Scripts -->
-       @vite(['resources/css/app.css', 'resources/js/app.js'])
+       {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+
+
+       <meta name="csrf-token" content="{{ csrf_token() }}">
 
       
       <script src="{{asset('user_assets/assets/js/jquery.min.js')}}"></script>
@@ -49,8 +54,6 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('user_assets/assets/css/daterangepicker/daterangepicker.css')}}" />
    
-
-
     <style>
        div.dt-button-collection {
          width: 400px;
@@ -83,7 +86,6 @@
          justify-content: space-between;
          }
 
-
          table tbody {
          font-weight: 500;
          color: black;
@@ -100,6 +102,10 @@
          color: #595C5C;
          font-weight: 600;
 
+         }
+
+         *{
+            font-weight: 800;
          }
 
     </style>
@@ -149,17 +155,16 @@
                         </li>
                         @php
                            use App\Models\Admin\Employee;
-                           $employee = Employee::get('category');
+                           $employee =array_unique(Employee::pluck('category')->toArray());
                         @endphp
 
                         @foreach ($employee as $emp)
                          <li>
-                           <a href="{{ route('admin.attendance.category', ['category'=> $emp->category])}}" > Employees {{$emp->category}} </a>
+                           <a href="{{ route('admin.attendance.category', ['category'=> $emp])}}" > Employees {{$emp}} </a>
                         </li> 
                         @endforeach
                        </ul>
                    </li>
-
 
                    <li class="sidebar-item @yield('visitors_selected')">
                      <a href=" {{route('admin.visitors')}} " class='sidebar-link'>
@@ -168,28 +173,33 @@
                      </a>
                    </li>
 
-                   <li class="sidebar-item @yield('visitors_selected')">
+                   <li class="sidebar-item @yield('users_selected')">
                     <a href=" {{route('admin.users')}} " class='sidebar-link'>
                     <i class="fa fa-plane text-success"></i>
                     <span> Users </span>
                     </a>
                   </li>
 
-                  <li class="sidebar-item @yield('visitors_selected')">
+                  <li class="sidebar-item @yield('logs_selected')">
                      <a href=" {{route('admin.logs')}} " class='sidebar-link'>
                      <i class="fa fa-plane text-success"></i>
                      <span> User logs </span>
                      </a>
                    </li>
 
+                   <li class="sidebar-item @yield('alcohol_test_selected')">
+                     <a href=" {{route('admin.alcohol_test')}} " class='sidebar-link'>
+                     <i class="fa fa-plane text-success"></i>
+                     <span> Alcohol tests </span>
+                     </a>
+                   </li>
 
-                 
                  <li class="sidebar-item @yield('profile_selected')">
                     <a href=" {{route('admin.account')}} " class='sidebar-link'>
                     <i class="fa fa-user text-success"></i>
                     <span>Profile</span>
                     </a>
-                 </li>
+                  </li>
 
                 </ul>
              </div>
@@ -212,7 +222,8 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
                                @if (!auth()->user()->hasRole('user'))
-                            {{--                     
+                              
+                               {{--                        
                                <li class="dropdown nav-icon">
                                 <a href="#" data-bs-toggle="dropdown" class="nav-link  dropdown-toggle nav-link-lg nav-link-user">
                                     <div class="d-lg-inline-block">
@@ -291,38 +302,34 @@
                 {{-- <script src="{{ asset('user_assets/assets/vendors/apexcharts/apexcharts.min.js') }} "></script> --}}
                 <script src="{{ asset('user_assets/assets/js/pages/dashboard.js') }} "></script>
                 <script src="{{ asset('user_assets/assets/js/main.js') }} "></script>
-                {{-- <script src="{{ asset('js/jq-signature.js') }}"></script> --}}
+
 
                 <link rel="stylesheet" type="text/css" href="{{asset('user_assets/assets/css/datatables.net/bs4/dt-1.10.25/r-2.2.9/datatables.min.css')}}"/>
                 <script type="text/javascript" src="{{asset('user_assets/assets/css/datatables.net/bs4/dt-1.10.25/r-2.2.9/datatables.min.js')}}"></script>
 
                 {{-- sweet arlet --}}
-                <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
-                
                {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.js"></script>
-               <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-               <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/fh-3.2.4/r-2.3.0/datatables.js"></script>
+                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+                 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/fh-3.2.4/r-2.3.0/datatables.js"></script>
+               --}}
 
-            --}}
+               
+               <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+               <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+               <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js" ></script>
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" ></script>
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" ></script>
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" ></script>
+               <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js" ></script>
+               <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js" ></script>
 
-            <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
-            <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
-            <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js" ></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" ></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" ></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" ></script>
-            <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js" ></script>
-            <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js" ></script>
-
-
-
-
-
+               <link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet" />
+               <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" />
 
                 <script>
 
-                    
                 // {{-- logaut --}}
                 // $('#l-logaut').click( function(e) {
                 //     e.preventDefault();

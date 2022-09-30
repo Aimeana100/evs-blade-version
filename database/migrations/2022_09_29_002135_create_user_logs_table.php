@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('user_logs', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->dateTime('time');
+            $table->string('activity');
             $table->timestamps();
         });
     }

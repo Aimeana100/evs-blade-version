@@ -15,10 +15,11 @@ class CreateGateKeeperLogsTable extends Migration
     {
         Schema::create('gate_keeper_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('session');
-            $table->dateTime('logDate');
+            $table->string('session')->nullable();
+            $table->dateTime('time');
             $table->integer('gate_keeper_id');
-            $table->string('loginDevice');
+            $table->string('loginDevice')->nullable();
+            $table->string('activity');
             $table->timestamps();
         });
     }

@@ -3,9 +3,8 @@
 @section('empolyees_selected','active')
 
 
+
 @section('content')
-
-
 
 <div class="main-content container-fluid">
     
@@ -26,6 +25,7 @@
     </div>
 
 
+
       <div class="tab-content" id="myTabContent">
 
         <div class="tab-pane fade show active " id="personal-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -33,6 +33,25 @@
             <div style="" class=" mt-30">
                 <div class="row">
 
+                    @if (session('success'))
+                    <div class="alert alert-success">
+                        <ul>
+                  
+                                <li>{{ session('success') }}</li>
+                           
+                        </ul>
+                    </div>
+                    @endif
+
+                    @if (session('error'))
+                    <div class="alert alert-danger">
+                        <ul>
+                  
+                                <li>{{ session('error') }}</li>
+                           
+                        </ul>
+                    </div>
+                    @endif
                     
                         <div class=" relative flex justify-end px-10 max-w-7xl w-2/5">
                             <a  href=""  data-toggle="modal" 
@@ -68,16 +87,33 @@
                                         @php
                                             $i = 0;
                                         @endphp
+                        {{-- <a href="" class="update" data-name="name" data-type="text" data-pk="{{ $user->id }}" data-title="Enter name">{{ $user->name }}</a> --}}
 
                                         @foreach ($employees as $item)
                                         <tr>
                                             <td> {{++$i}}</td>
-                                            <td> {{$item->names}}</td>
-                                            <td> {{$item->ID_Card}} </td>
-                                            <td> {{$item->phone}} </td>
-                                            <td> {{$item->department}} </td>
+                                            <td> 
+                                                <a class="update" data-name="name" data-type="text" data-pk="{{ $item->id }}" data-title="Enter name"> {{$item->names}} </a>
+
+                                                
+                                            </td>
+                                            <td> 
+                                                <a class="update" data-name="name" data-type="text" data-pk="{{ $item->id }}" data-title="Enter name"> {{$item->ID_Card}}  </a>
+                                                
+                                            </td>
+                                            <td>
+                                                <a class="update" data-name="name" data-type="text" data-pk="{{ $item->id }}" data-title="Enter name"> {{$item->phone}}  </a>
+
+                                                 </td>
+                                            <td>
+                                                <a class="update" data-name="name" data-type="text" data-pk="{{ $item->id }}" data-title="Enter name"> {{$item->department}}  </a>
+
+                                                 
+                                                 </td>
                                             <td> {{$item->gender}} </td>
-                                            <td></td>
+                                            <td>
+                                                <button class="text-red-400" ><i class="fa fa-ban" aria-hidden="true"></i></button>
+                                            </td>
                                         </tr>
                                             
                                         @endforeach
@@ -123,94 +159,6 @@
                             <input type="file" name="file" class="form-control" id="file" accept=".xlsx, .xls, .csv" required>
                             <button class="w-full max-w-sm mx-10 p-2 text-emerald-700 mt-4  bg-[#5797CC] btn-primary" type="submit">  Upload </button>
                         </form>
-
-                        <hr>
-
-                        
-
-
-                        <form class="form" id="frmProfile" 
-                        action="{{route('admin.update.acount')}}"
-                         method="POST">
-
-                            @csrf
-
-                            <div class="row ">
-
-                                <div class="col-md-10 col-lg-8">
-                                    <div class="form-group has-icon-left">
-                                        <label for="names"> Names </label>
-                                        <div class="position-relative">
-                                            <input name="names" type="text" class="form-control rounded" placeholder="John doe" id="names" value="" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-10 col-lg-8">
-                                    <div class="form-group has-icon-left">
-                                        <label for="card_id">ID number</label>
-                                        <div class="position-relative">
-                                            <input name="card_id" type="card_id" class="form-control rounded" id="card_id" value="" required>
-                                            <div class=" form-control-icon">
-                                                <i class="fa fa-user"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-10 col-lg-8">
-                                    <div class="form-group has-icon-left">
-                                        <label for="phone">  Phone </label>
-                                        <div class="position-relative">
-                                            <input name="phone" type="text" class="form-control rounded"  id="phone" value="">
-                                        </div>
-                                    </div>
-                                </div>
-                                                           
-                                <div class="col-md-10 col-lg-8">
-                                    <div class="form-group has-icon-left">
-                                        <label for="departement"> Departement </label>
-                                        <div class="position-relative">
-                                            <fieldset class="form-group">
-                                                <select name="departement" class="form-select" id="departement">
-                                                    <option value=""> -- Select -- </option>
-
-                                                </select>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                                           
-                                <div class="col-md-10 col-lg-8">
-                                    <div class="form-group has-icon-left">
-                                        <label for="gender"> Position </label>
-                                        <div class="position-relative">
-                                            <fieldset class="form-group">
-                                                <select name="gender" class="form-select" id="gender">
-                                                    <option value=""> -- Select -- </option>
-
-                                                </select>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row mt-3">
-                                <input type="hidden" id="id" name="id" value="">
-                                <div class="col-12 d-flex  justify-content-center">
-                                    <button id="frmUpdate" type="submit" class="btn btn-primary me-1 mb-1"> Add </button>
-                                </div>
-                            </div>
-
-                             
-                             <div id="update-messages">
-                             </div>
-
-                        </form>
                     
                     </div>
                     <div class="modal-footer">
@@ -222,12 +170,45 @@
 
 @endsection
 
+
 @section('js')
+
+
+{{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> --}}
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+<script> $.fn.poshytip={defaults:null} </script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+
+
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> --}}
 
 <script>
 
- // populate request details of long view
 
+$('#table1').DataTable( {
+        dom: 'Bfrtip',
+        responsive: true,
+        buttons: [
+            {
+                extend: 'collection',
+                className: 'custom-html-collection',
+                buttons: [
+                    '<h3>Export</h3>',
+                    'pdf',
+                    'csv',
+                    'excel',
+                    '<h3 class="not-top-heading">Column Visibility</h3>',
+                    'colvis',
+                    'colvis'
+                ]
+            }
+        ]
+    } );
+
+
+
+ // populate request details of long view
  $(document).on('click', '.js-add', function(){
     var reqId = $(this).data('reqid');
 
@@ -239,6 +220,39 @@
 
  });
 
+
+    $.fn.editable.defaults.mode = 'inline';
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{csrf_token()}}'
+        }
+    }); 
+  
+    $('.update').editable({
+           url: "{{ route('employee.update') }}",
+           type: 'text',
+           pk: 1,
+           name: 'name',
+           title: 'Enter name'
+    });
+
+
+    $(".deleteProduct").click(function(){
+	    	$(this).parents('tr').hide();
+	        var id = $(this).data("id");
+	        var token = '{{ csrf_token() }}';
+	        $.ajax(
+	        {
+	            method:'POST',
+	            url: "/employee/delete/"+id,
+	            data: {_token: token},
+	            success: function(data)
+	            {
+	                toastr.success('Successfully!','Delete');
+	            }
+	        });
+	    });
 
 </script>
     

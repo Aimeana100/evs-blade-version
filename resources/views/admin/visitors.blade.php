@@ -145,19 +145,21 @@
 
                         }
 
-         $i= 0;
+   
 
         @endphp
 
 
-@if(count($daysTaps) > 0)
-@foreach ($daysTaps as $date=>$dayly_taps)
+            @if(count($daysTaps) > 0)
+            @foreach ($daysTaps as $date=>$dayly_taps)
     
-
+            @php
+            $i= 0;
+            @endphp
 
             <section>
                 <div class="card mt-3 bg-blue-100">
-                    <h1 class="text-center" > <span class="p-2 border rounded border-cyan-300" > {{$date}} </span> </h1>
+                    <h1 class="text-center" > <span class="p-2 border rounded border-cyan-900" > {{$date}} </span> </h1>
                     <div class="card-body">
                         <table  id="table_{{$date}}" class="table display nowrap" style="width:100%">
                             <thead>
@@ -181,7 +183,7 @@
                                 @else
                                              
                                 <tr>
-                                    <td> {{$i++}} </td>
+                                    <td> {{++$i}} </td>
                                     <td> {{ $item['names'] }} </td>
                                     <td> {{ $item['ID_Card'] }} </td>
                                     <td> {{ ctype_alpha($item['phone']) || strlen($item['phone']) > 15  || strlen($item['phone']) < 10 ? "-" : $item['phone']}} </td>
@@ -276,10 +278,7 @@
     
 
     @endforeach
-    
-    
 
-    
      </script>
     
     

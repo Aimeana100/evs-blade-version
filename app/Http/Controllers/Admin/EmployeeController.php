@@ -9,6 +9,7 @@ use App\Models\Admin\CardTap;
 use App\Models\Admin\Employee;
 use App\Imports\EmployeesImport;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\AlcoholTest;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\Redirect;
@@ -43,11 +44,10 @@ class EmployeeController extends Controller
         }
 
         $taps = CardTap::orderBy('tapped_at', 'DESC')
+            ->where('card_type', 'STAFF')
             ->whereBetween('tapped_at', [$dateS . " 00:00:00", $dateE . " 23:59:59"])
             ->pluck('tapped_at')
             ->toArray();
-
-        // $taps = CardTap::orderBy('tapped_at', 'DESC')->pluck('tapped_at')->toArray();
 
         $ymdDate = array_map(function ($el) {
 
@@ -85,7 +85,6 @@ class EmployeeController extends Controller
         }
 
         return view('admin.attendance', ['filter' => $noDuplicate, 'daysTaps' => $daysTaps, 'depts' => $employees->pluck('department')]);
-
     }
 
     public function employeesAttendanceCategory(Request $request, $category)
@@ -93,9 +92,9 @@ class EmployeeController extends Controller
 
         if ($request->get('departement') && $request->get('departement') != "") {
 
-            $employees = Employee::with('taps')->where(['category'=> $category, 'department', $request->departement])->get();
+            $employees = Employee::with('taps')->where(['category' => $category, 'department', $request->departement])->get();
         } else {
-            $employees = Employee::with('taps')->where(['category'=> $category])->get();
+            $employees = Employee::with('taps')->where(['category' => $category])->get();
         }
 
 
@@ -115,10 +114,7 @@ class EmployeeController extends Controller
             ->pluck('tapped_at')
             ->toArray();
 
-        // $taps = CardTap::orderBy('tapped_at', 'DESC')->pluck('tapped_at')->toArray();
-
         $ymdDate = array_map(function ($el) {
-
             return date('Y-m-d', strtotime($el));
         }, $taps);
 
@@ -144,7 +140,6 @@ class EmployeeController extends Controller
 
                         array_push($daysTaps[$t], $employee);
                     } else {
-
                         $daysTaps[$t] = [];
                         array_push($daysTaps[$t], $employee);
                     }
@@ -152,9 +147,8 @@ class EmployeeController extends Controller
             }
         }
 
-        return view('admin.attendance', ['filter' => $noDuplicate, 'daysTaps' => $daysTaps, 'depts' => $employees->pluck('department')]);
+        return view('admin.attendance', ['filter' => $noDuplicate, 'daysTaps' => $daysTaps, 'depts' => array_unique(Employee::pluck('department')->toArray())]);
     }
-
 
     public function uploadEmployees(Request $request)
     {
@@ -177,7 +171,6 @@ class EmployeeController extends Controller
             return date('Y-m-d', strtotime($el));
         }, $taps);
 
-
         $noDuplicate = array_slice(array_map(function ($el) {
             return $el;
         }, array_unique($ymdDate)), 0);
@@ -190,31 +183,14 @@ class EmployeeController extends Controller
         foreach ($noDuplicate as $t) {
 
             foreach ($visitors->toArray() as $visitor) {
-
-                // dd($visitor['id']);
-
-                // dd(array_map( function($tap){ return date('Y-m-d', strtotime($tap['tapped_at']));
-                // },$visitor['taps']), $t);
-
                 if (in_array($t, array_map(function ($tap) {
 
                     return date('Y-m-d', strtotime($tap['tapped_at']));
                 }, $visitor['taps']))) {
-
-                    // dd($visitor['taps'], $t, in_array($t, array_map(function ($tap) {
-
-                    //     return date('Y-m-d', strtotime($tap['tapped_at']));
-
-                    // }, $visitor['taps'])), array_map(function ($el){return $el['tapped_at'];},$visitor['taps']), 
-                    // array_filter($visitor['taps'], function($element) use($t){
-                    //     return date('Y-m-d', strtotime($element['tapped_at'])) == $t;
-                    // }) );
-
                     if (array_key_exists($t, $daysTaps)) {
 
                         array_push($daysTaps[$t], $visitor);
                     } else {
-
                         $daysTaps[$t] = [];
                         array_push($daysTaps[$t], $visitor);
                     }
@@ -240,8 +216,6 @@ class EmployeeController extends Controller
         $logo2 = 'data:image/' . $type2 . ';base64,' . base64_encode($data2);
 
 
-
-
         $pdf = PDF::loadview('report', ['logo1' => $logo1, 'logo2' => $logo2, 'filter' => $noDuplicate[0], 'daysTaps' => $daysTaps[$noDuplicate[0]]]);
 
         return $pdf->download('attendance.pdf');
@@ -260,7 +234,74 @@ class EmployeeController extends Controller
         return Redirect::back()->with('success', 'Employee State has ' . $message);
     }
 
-    public function employeeOne(Request $request, $id)
+    public function employeeAttendanceOne(Request $request, $id)
     {
+
+
+        if ($request->get('departement') && $request->get('departement') != "") {
+
+            $employees = Employee::with('taps')->where(['category' => $category, 'department', $request->departement])->get();
+        } else {
+            $employees = Employee::with('taps')->where(['category' => $category])->get();
+        }
+
+        if ($request->has('start_date') && $request->start_date != "" && $request->end_date != '') {
+
+
+            $dateS = date($request->start_date);
+            $dateE = date($request->end_date);
+        } else {
+            $dateS = date('Y-m-d');
+            $dateE = date('Y-m-d');
+        }
+
+
+        $taps = CardTap::orderBy('tapped_at', 'DESC')
+            ->whereBetween('tapped_at', [$dateS . " 00:00:00", $dateE . " 23:59:59"])
+            ->pluck('tapped_at')
+            ->toArray();
+
+        $ymdDate = array_map(function ($el) {
+            return date('Y-m-d', strtotime($el));
+        }, $taps);
+
+
+        $noDuplicate = array_slice(array_map(function ($el) {
+            return $el;
+        }, array_unique($ymdDate)), 0);
+
+        $daysTaps = [];
+
+        $noDuplicate = array_slice($noDuplicate, 0, 5);
+
+        foreach ($noDuplicate as $t) {
+
+            foreach ($employees->toArray() as $employee) {
+
+                if (in_array($t, array_map(function ($tap) {
+
+                    return date('Y-m-d', strtotime($tap['tapped_at']));
+                }, $employee['taps']))) {
+
+                    if (array_key_exists($t, $daysTaps)) {
+
+                        array_push($daysTaps[$t], $employee);
+                    } else {
+                        $daysTaps[$t] = [];
+                        array_push($daysTaps[$t], $employee);
+                    }
+                }
+            }
+        }
+
+        return view('admin.attendance_one', ['filter' => $noDuplicate, 'daysTaps' => $daysTaps, 'depts' => $employees->pluck('department')]);
+
+    }
+
+
+    public function alcoholTest()
+    {
+        $alcoholTest = AlcoholTest::all();
+        return view('admin.alcohol_test', compact('alcoholTest'));
     }
 }

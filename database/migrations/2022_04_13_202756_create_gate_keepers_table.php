@@ -15,7 +15,7 @@ class CreateGateKeepersTable extends Migration
     {
         Schema::create('gate_keepers', function (Blueprint $table) {
             $table->id();
-            $table->string('names');
+            $table->string('names')->nullable();
             $table->string('username');
             $table->string('password');
             $table->boolean('session_status')->default(true);

@@ -9,18 +9,18 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpsertColumns;
 
-class EmployeesImport implements ToModel,WithHeadingRow,WithUpsertColumns
+class EmployeesImport implements ToModel, WithHeadingRow, WithUpsertColumns
 
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         return new Employee([
-            'names' => $row['names'], 
+            'names' => $row['names'],
             'surname' => $row['surname'],
             'ID_Card' => $row['id_card'],
             'department' => $row['department'],
@@ -33,17 +33,16 @@ class EmployeesImport implements ToModel,WithHeadingRow,WithUpsertColumns
             'dateJoined' => Carbon::now(),
             'latestTap' => Carbon::now()
         ]);
-
     }
 
 
-    // public function uniqueBy()
-    // {
-    //     return 'ID_Card';
-    // }
+    public function uniqueBy()
+    {
+        return 'ID_Card';
+    }
 
     public function upsertColumns()
     {
-        return ['department', 'phone','location', 'category', 'position'];
+        return ['department', 'phone', 'location', 'category', 'position'];
     }
 }

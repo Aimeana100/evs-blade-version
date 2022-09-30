@@ -4,14 +4,13 @@ use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Models\Admin\Vistor;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\Admin\VistorController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\EmployeeController;
-use App\Http\Controllers\admin\ReportController;
+use App\Http\Controllers\API\GateKeeperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +23,16 @@ use App\Http\Controllers\admin\ReportController;
 |
 */
 
-
 // Report
 
 Route::get('/report', [ReportController::class, 'index']);
 
 // admin
-Route::get('/', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('welcome');
+Route::get('/', function(){
+    return view('welcome');
+})->name('home');
+
+
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // users
@@ -52,11 +54,17 @@ Route::get('/employees/Attendance', [EmployeeController::class, 'employeesAttend
 Route::get('/employees/Attendance/{category}', [EmployeeController::class, 'employeesAttendanceCategory'])->middleware(['auth', 'verified'])->name('admin.attendance.category');
 Route::get('/employees/Attendance/download', [EmployeeController::class, 'employeesAttendanceDownload'])->middleware(['auth', 'verified'])->name('admin.attendance.download');
 Route::get('/employees/burn/{employee}', [EmployeeController::class, 'employeeBurn'])->middleware(['auth', 'verified'])->name('employee.burn');
-Route::get('/employees/{id}', [EmployeeController::class, 'employeeOne'])->middleware(['auth', 'verified'])->name('employee.one');
+Route::get('/employees/attendance/{id}', [EmployeeController::class, 'employeeAttendanceOne'])->middleware(['auth', 'verified'])->name('employee.attendance.one');
 Route::post('/employees/upload', [EmployeeController::class, 'uploadEmployees'])->middleware(['auth', 'verified'])->name('employee.upload');
+Route::post('/employees/update', [EmployeeController::class, 'updateEmployee'])->middleware(['auth', 'verified'])->name('employee.update');
 
-Route::post('/users', [EmployeeController::class, 'users'])->middleware(['auth', 'verified'])->name('admin.users');
-Route::post('/logs', [EmployeeController::class, 'logs'])->middleware(['auth', 'verified'])->name('admin.logs');
+
+Route::get('/users', [UserController::class, 'users'])->middleware(['auth', 'verified'])->name('admin.users');
+Route::post('/users/create', [UserController::class, 'create'])->middleware(['auth', 'verified'])->name('admin.users.create');
+Route::get('/logs', [UserController::class, 'logs'])->middleware(['auth', 'verified'])->name('admin.logs');
+
+Route::post('/users/gate/create', [GateKeeperController::class, 'create'])->middleware(['auth', 'verified'])->name('admin.security.create');
+
 
 
 Route::get('/equipments', [AdminController::class, 'equipments'])->middleware(['auth', 'verified'])->name('equipments');
@@ -67,6 +75,9 @@ Route::get('/editPassword', [AdminController::class, 'editPassword'])->middlewar
 Route::post('/editPassword', [AdminController::class, 'updatePassword'])->middleware(['auth', 'verified'])->name('admin.update.password');
 
 // Route::get('/visitors', [EmployeeController::class, 'visitors'])->middleware(['auth', 'verified'])->name('admin.visitors');
+
+
+Route::get('/alcoholTest', [EmployeeController::class, 'alcoholTest'])->middleware(['auth', 'verified'])->name('admin.alcohol_test');
 
 
 require __DIR__ . '/auth.php';

@@ -17,6 +17,7 @@ class CreateEquipmentTable extends Migration
             $table->id();
             $table->string('equipment_name');
             $table->integer('user_id');
+            $table->integer('tap_id');
             $table->string('direction');
             $table->string('status')->comment('RETURNED or WAITING');
             $table->timestamps();
